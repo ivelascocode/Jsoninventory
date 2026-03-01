@@ -1,0 +1,361 @@
+{
+  "repo": {
+    "repo": "https://github.com/dotnet-architecture/eShopOnContainers.git",
+    "ref": "dev"
+  },
+  "generated_at": "2026-03-01T14:51:15.585Z",
+  "applications": [
+    {
+      "id": "seq",
+      "type": "infra",
+      "paths": [],
+      "depends_on": [],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "Servidor de logs estructurados"
+    },
+    {
+      "id": "sqldata",
+      "type": "infra",
+      "paths": [],
+      "depends_on": [],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "Base de datos SQL"
+    },
+    {
+      "id": "nosqldata",
+      "type": "infra",
+      "paths": [],
+      "depends_on": [],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "Base de datos NoSQL"
+    },
+    {
+      "id": "basketdata",
+      "type": "infra",
+      "paths": [],
+      "depends_on": [],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "Almacenamiento/caché del carrito (p.ej., Redis)"
+    },
+    {
+      "id": "rabbitmq",
+      "type": "infra",
+      "paths": [],
+      "depends_on": [],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "Broker de mensajería"
+    },
+    {
+      "id": "identity-api",
+      "type": "api",
+      "paths": [
+        "."
+      ],
+      "depends_on": [
+        "sqldata"
+      ],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "Servicio de autenticación/identidad"
+    },
+    {
+      "id": "basket-api",
+      "type": "api",
+      "paths": [
+        "."
+      ],
+      "depends_on": [
+        "basketdata",
+        "identity-api",
+        "rabbitmq"
+      ],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "API del carrito de compras"
+    },
+    {
+      "id": "catalog-api",
+      "type": "api",
+      "paths": [
+        "."
+      ],
+      "depends_on": [
+        "sqldata",
+        "rabbitmq"
+      ],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "API del catálogo de productos"
+    },
+    {
+      "id": "ordering-api",
+      "type": "api",
+      "paths": [
+        "."
+      ],
+      "depends_on": [
+        "sqldata",
+        "rabbitmq"
+      ],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "API de pedidos"
+    },
+    {
+      "id": "ordering-backgroundtasks",
+      "type": "worker",
+      "paths": [
+        "."
+      ],
+      "depends_on": [
+        "sqldata",
+        "rabbitmq"
+      ],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "Tareas en segundo plano para pedidos"
+    },
+    {
+      "id": "payment-api",
+      "type": "api",
+      "paths": [
+        "."
+      ],
+      "depends_on": [
+        "rabbitmq"
+      ],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "API de pagos"
+    },
+    {
+      "id": "webhooks-api",
+      "type": "api",
+      "paths": [
+        "."
+      ],
+      "depends_on": [
+        "sqldata"
+      ],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "API de webhooks"
+    },
+    {
+      "id": "mobileshoppingapigw",
+      "type": "gateway",
+      "paths": [],
+      "depends_on": [],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "Gateway para clientes móviles"
+    },
+    {
+      "id": "mobileshoppingagg",
+      "type": "api",
+      "paths": [
+        "."
+      ],
+      "depends_on": [
+        "nosqldata",
+        "sqldata",
+        "identity-api",
+        "rabbitmq",
+        "ordering-api",
+        "catalog-api",
+        "basket-api"
+      ],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "API agregadora para móvil"
+    },
+    {
+      "id": "webshoppingagg",
+      "type": "api",
+      "paths": [
+        "."
+      ],
+      "depends_on": [
+        "nosqldata",
+        "sqldata",
+        "identity-api",
+        "rabbitmq",
+        "ordering-api",
+        "catalog-api",
+        "basket-api"
+      ],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "API agregadora para web"
+    },
+    {
+      "id": "ordering-signalrhub",
+      "type": "api",
+      "paths": [
+        "."
+      ],
+      "depends_on": [
+        "nosqldata",
+        "sqldata",
+        "identity-api",
+        "rabbitmq",
+        "ordering-api",
+        "catalog-api",
+        "basket-api"
+      ],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "Hub SignalR de tiempo real"
+    },
+    {
+      "id": "webstatus",
+      "type": "frontend",
+      "paths": [
+        "."
+      ],
+      "depends_on": [],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "UI de estado/monitorización"
+    },
+    {
+      "id": "webspa",
+      "type": "frontend",
+      "paths": [
+        "."
+      ],
+      "depends_on": [
+        "webshoppingagg",
+        "webshoppingapigw"
+      ],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "Aplicación SPA para usuarios"
+    },
+    {
+      "id": "webmvc",
+      "type": "frontend",
+      "paths": [
+        "."
+      ],
+      "depends_on": [
+        "webshoppingagg",
+        "webshoppingapigw"
+      ],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "Aplicación web MVC"
+    },
+    {
+      "id": "webhooks-client",
+      "type": "frontend",
+      "paths": [
+        "."
+      ],
+      "depends_on": [
+        "webhooks-api"
+      ],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "Cliente/UI para webhooks"
+    },
+    {
+      "id": "webshoppingapigw",
+      "type": "gateway",
+      "paths": [],
+      "depends_on": [],
+      "exposes": [],
+      "apis": [],
+      "source": {
+        "kind": "docker-compose",
+        "file": "src/docker-compose.yml"
+      },
+      "notes": "Gateway para clientes web"
+    }
+  ]
+}
